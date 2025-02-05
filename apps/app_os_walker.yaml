@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+    rabbitmq:
+        image: rabbitmq:management
+        container_name: rabbitmq
+        ports:
+          - "5672:5672"
+          - "15672:15672"
+    app_os_walker:
+        build:
+          context: ..
+          dockerfile: app_meta_builder.py.docker
+        container_name: app_os_walker
+        command: ["python3", "/apps/app_os_walker.py"]
+        depends_on:
+          - rabbitmq
+        volumes:
+          - /physical-path-to-meta-folder:/meta
+          - /physical-path-to-source-folder:/source

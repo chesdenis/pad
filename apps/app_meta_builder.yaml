@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+    app_meta_builder:
+        build:
+          context: ..
+          dockerfile: app_meta_builder.py.docker
+        container_name: app_meta_builder
+        command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
+        volumes:
+          - /physical-path-to-meta-folder:/meta
+          - /physical-path-to-source-folder:/source

@@ -1,0 +1,5 @@
+from python:3.9-slim
+WORKDIR /
+COPY . /apps
+RUN find /apps -type f -name "*.py" -exec sed -i 's/localhost/host.docker.internal/g' {} +
+RUN pip3 install -r /apps/requirements.txt
