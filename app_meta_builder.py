@@ -2,7 +2,8 @@ import hashlib
 import logging
 import os.path
 
-import _attr_builder as ab
+import _fs_entry_handler as fshandler
+import _path_resolvers as rp
 
 def calculate_file_hash(file_path):
     hasher = hashlib.md5()
@@ -34,9 +35,9 @@ def require_process(relative_path):
     if rewrite:
         return True
 
-    attribute_file_path = get_attribute_file_name(relative_path, "md5_hash")
+    attribute_file_path = rp.get_meta_file_name(relative_path, "md5_hash.txt")
     logging.info(f"Verifying attribute existance for {attribute_file_path}")
-    attribute_home_folder = get_attribute_home_folder(relative_path)
+    attribute_home_folder = rp.get_meta_home_folder(relative_path)
     if not os.path.exists(attribute_home_folder):
         os.makedirs(attribute_home_folder, exist_ok=True)
         logging.info(f"Created new attribute folder {attribute_home_folder}")
@@ -47,24 +48,20 @@ def require_process(relative_path):
 
     return False
 
-def get_attribute_home_folder(relative_path):
-    return os.path.join("meta", relative_path)
-
-def get_attribute_file_name(relative_path, attribute_file_name):
-    return os.path.join("meta", relative_path, attribute_file_name)
 
 def write_attribute_file(relative_path, attribute_file_name, attribute_value):
-    attr_file_name = get_attribute_file_name(relative_path, attribute_file_name)
+    attr_file_name = rp.get_meta_file_name(relative_path, attribute_file_name)
 
     f = open(attr_file_name, "w")
     f.write(attribute_value)
     f.close()
 
-def build_attribute(file_path, relative_path, channel):
+def handle_event_entry(file_path, relative_path, channel):
     if not require_process(relative_path):
         logging.info(f'File {file_path} with relative path {relative_path} is not require for processing')
         return
 
+    logging.info(f'Started to calculate file hash for {file_path} and other attributes')
     md5_hash = calculate_file_hash(file_path)
     parent_folder_name = calculate_parent_folder_name(file_path)
     extension = calculate_extension(file_path)
@@ -82,4 +79,4 @@ def build_attribute(file_path, relative_path, channel):
 
 
 if __name__ == '__main__':
-    ab.start(build_attribute, prefetch_count=100)
+    fshandler.start(handle_event_entry, prefetch_count=100)

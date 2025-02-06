@@ -15,29 +15,25 @@ def on_message(channel, method_frame, header_frame, body):
 
         logger.info(f"Received for {client_id}, for file {path}.")
 
-        file_name = os.path.basename(path)
+        if type == 'file':
+            handle_event_entry(path, relative_path, channel)
+        else:
+            logger.info(f"Message type is not 'file': {type}")
 
-        # here we make sure that we skip .ai_attr.txt files
-        # we must assign attributes only for regular files
-        if not file_name.lower().endswith('.ai_attr.txt'):
-            if type == 'file':
-                build_attribute(path, relative_path, channel)
-            else:
-                logger.info(f"Message type is not 'file': {type}")
     except Exception as e:
         logger.error(f"Error processing message: {e}")
 
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
-def build_attribute(file_path, relative_path, channel):
+def handle_event_entry(file_path, relative_path, channel):
     return
 
 
 def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback=None):
 
-    global build_attribute
-    build_attribute = handler_func
+    global handle_event_entry
+    handle_event_entry = handler_func
 
     parser = argparse.ArgumentParser(description="RabbitMQ consumer for populating .ai_attr.txt")
     parser.add_argument('--client_id', type=str, help='client id as string as identifier in data flow')
