@@ -16,7 +16,7 @@ def copy_file(file_path, relative_path):
     logging.info(f'Copy file from {file_path} to {directoy_name}')
     shutil.copy2(file_path, dest_path)
 
-def handle_event_entry(file_path, relative_path, channel):
+def handle_event_entry(file_path, relative_path, channel, args):
     copy_file(file_path, relative_path)
     logging.info(f'Copied file {relative_path}')
 

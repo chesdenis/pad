@@ -75,6 +75,7 @@ def process_message(channel, method, properties, body):
     storage_path = message['storage_path']
     recursive = message['recursive']
     file_mask = message['file_mask']
+    args = message['args']
 
     exchange = 'os_walk_response'
     routing_key = client_id
@@ -89,7 +90,10 @@ def process_message(channel, method, properties, body):
         key = ";#".join([folder_path, file_mask, storage_path, str(recursive)])
 
         for message in iterate_folder(key):
+
+            # decorating messages again because we also need to pass other properties
             message["client_id"] = client_id
+            message["args"] = args
 
             # for files we publish to specific client directly, no need to lookup to nested folders
             if message["type"] == "file":

@@ -56,26 +56,62 @@ def write_attribute_file(relative_path, attribute_file_name, attribute_value):
     f.write(attribute_value)
     f.close()
 
-def handle_event_entry(file_path, relative_path, channel):
+def handle_direct_attribute(file_path, relative_path, channel, args):
+    if args == 'md5_hash':
+        md5_hash = calculate_file_hash(file_path)
+        write_attribute_file(relative_path, "md5_hash.txt", md5_hash)
+        return True
+    if args == 'parent_folder_name':
+        parent_folder_name = calculate_parent_folder_name(file_path)
+        write_attribute_file(relative_path, "parent_folder_name.txt", parent_folder_name)
+        return True
+    if args == 'tags':
+        tags = calculate_tags(file_path)
+        write_attribute_file(relative_path, "tags.txt", tags)
+        return True
+    if args == 'extension':
+        extension = calculate_extension(file_path)
+        write_attribute_file(relative_path, "extension.txt", extension)
+        return True
+    if args == 'size':
+        size = calculate_size(file_path)
+        write_attribute_file(relative_path, "size.txt", size)
+        return True
+    if args == 'file_name':
+        file_name = os.path.basename(file_path)
+        write_attribute_file(relative_path, "file_name.txt", file_name)
+        return True
     if not require_process(relative_path):
         logging.info(f'File {file_path} with relative path {relative_path} is not require for processing')
-        return
+        return True
 
-    logging.info(f'Started to calculate file hash for {file_path} and other attributes')
-    md5_hash = calculate_file_hash(file_path)
-    parent_folder_name = calculate_parent_folder_name(file_path)
-    extension = calculate_extension(file_path)
-    size = calculate_size(file_path)
-    tags = calculate_tags(file_path)
-    logging.info(f'Calculated file hash for {file_path} and other attributes')
+    return False
 
-    write_attribute_file(relative_path, "md5_hash.txt", md5_hash)
-    write_attribute_file(relative_path, "parent_folder_name.txt", parent_folder_name)
-    write_attribute_file(relative_path, "extension.txt", extension)
-    write_attribute_file(relative_path, "size.txt", size)
-    write_attribute_file(relative_path, "tags.txt", tags)
+def handle_event_entry(file_path, relative_path, channel, args):
 
-    logging.info(f'Stored file hash and attributes for {relative_path}')
+    if args != '':
+        logging.info(f'Applying specific meta extract of {args} for {file_path}')
+        result = handle_direct_attribute(file_path, relative_path, channel, args)
+        if result:
+            logging.info(f'File {file_path} with relative path {relative_path} is processed with direct attribute {args}')
+            return
+    else:
+        logging.info(f'Started to calculate file hash for {file_path} and other attributes')
+        md5_hash = calculate_file_hash(file_path)
+        parent_folder_name = calculate_parent_folder_name(file_path)
+        extension = calculate_extension(file_path)
+        size = calculate_size(file_path)
+        tags = calculate_tags(file_path)
+        logging.info(f'Calculated file hash for {file_path} and other attributes')
+
+        write_attribute_file(relative_path, "md5_hash.txt", md5_hash)
+        write_attribute_file(relative_path, "parent_folder_name.txt", parent_folder_name)
+        write_attribute_file(relative_path, "extension.txt", extension)
+        write_attribute_file(relative_path, "size.txt", size)
+        write_attribute_file(relative_path, "tags.txt", tags)
+        write_attribute_file(relative_path, "file_name.txt", os.path.basename(file_path))
+
+        logging.info(f'Stored file hash and attributes for {relative_path}')
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ def move_file(file_path, relative_path):
     #shutil.move(file_path, dest_path)
     logging.info(f'Moved file from {file_name} to {dest_path}')
 
-def handle_event_entry(file_path, relative_path, channel):
+def handle_event_entry(file_path, relative_path, channel, args):
     move_file(file_path, relative_path)
     logging.info(f'Moved file {relative_path}')
 

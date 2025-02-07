@@ -12,11 +12,12 @@ def on_message(channel, method_frame, header_frame, body):
         path = message['path']
         type = message['type']
         relative_path = message['relative_path']
+        args = message.get('args', '')
 
         logger.info(f"Received for {client_id}, for file {path}.")
 
         if type == 'file':
-            handle_event_entry(path, relative_path, channel)
+            handle_event_entry(path, relative_path, channel, args)
         else:
             logger.info(f"Message type is not 'file': {type}")
 
@@ -26,7 +27,7 @@ def on_message(channel, method_frame, header_frame, body):
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
-def handle_event_entry(file_path, relative_path, channel):
+def handle_event_entry(file_path, relative_path, channel, args):
     return
 
 
