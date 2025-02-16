@@ -14,11 +14,9 @@ Personal advanced directory
 # message sample to scan and store file names in meta
 
 ```json
-{
-"client_id":"app_meta_builder",
-"storage_path":"/source",
-"recursive":1,
-"file_mask":"*.*",
-"args":"file_name"
-}
+{"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*", "args":"file_name"}
+```
+
+```json
+{"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*", "args":"parent_folder_path"}
 ```

@@ -65,6 +65,9 @@ def handle_direct_attribute(file_path, relative_path, channel, args):
         parent_folder_name = calculate_parent_folder_name(file_path)
         write_attribute_file(relative_path, "parent_folder_name.txt", parent_folder_name)
         return True
+    if args == 'parent_folder_path':
+        write_attribute_file(relative_path, "parent_folder_path.txt", relative_path)
+        return True
     if args == 'tags':
         tags = calculate_tags(file_path)
         write_attribute_file(relative_path, "tags.txt", tags)
@@ -99,6 +102,7 @@ def handle_event_entry(file_path, relative_path, channel, args):
         logging.info(f'Started to calculate file hash for {file_path} and other attributes')
         md5_hash = calculate_file_hash(file_path)
         parent_folder_name = calculate_parent_folder_name(file_path)
+        parent_folder_path = relative_path
         extension = calculate_extension(file_path)
         size = calculate_size(file_path)
         tags = calculate_tags(file_path)
@@ -106,6 +110,7 @@ def handle_event_entry(file_path, relative_path, channel, args):
 
         write_attribute_file(relative_path, "md5_hash.txt", md5_hash)
         write_attribute_file(relative_path, "parent_folder_name.txt", parent_folder_name)
+        write_attribute_file(relative_path, "parent_folder_path.txt", parent_folder_path)
         write_attribute_file(relative_path, "extension.txt", extension)
         write_attribute_file(relative_path, "size.txt", size)
         write_attribute_file(relative_path, "tags.txt", tags)

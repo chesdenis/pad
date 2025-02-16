@@ -35,7 +35,7 @@ def iterate_folder(key):
 
     for root, dirs, files in os.walk(folder_path):
         for name in files:
-            if fnmatch.fnmatch(name, file_mask):
+            if fnmatch.fnmatch(name, file_mask.upper()) or fnmatch.fnmatch(name, file_mask.lower()):
                 full_path = os.path.join(root, name)
                 relative_path = os.path.relpath(full_path, storage_path)
                 file_info = {
@@ -75,7 +75,7 @@ def process_message(channel, method, properties, body):
     storage_path = message['storage_path']
     recursive = message['recursive']
     file_mask = message['file_mask']
-    args = message['args']
+    args = message.get('args', '')
 
     exchange = 'os_walk_response'
     routing_key = client_id
