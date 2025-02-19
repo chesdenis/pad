@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+    app_move_into_folder:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_move_into_folder
+        command: ["python3", "/apps/app_move_into_folder.py"]
+        volumes:
+          - /Volumes/AnnaX/Hive/merge:/merge-refined:/merge-refined
+          - /Volumes/AnnaX/Hive/merge:/merge:/merge
+        environment:
+          - SOURCE_DIR=/merge
+          - TARGET_DIR=/merge-refined
+          - FILENAMES_TO_MOVE=preview16.jpeg
