@@ -8,9 +8,9 @@ services:
         container_name: app_move_into_folder
         command: ["python3", "/apps/app_move_into_folder.py"]
         volumes:
-          - /Volumes/AnnaX/Hive/merge:/merge-refined:/merge-refined
-          - /Volumes/AnnaX/Hive/merge:/merge:/merge
+          - /Volumes/AnnaX/Hive/merge:/merge
+          - /Volumes/AnnaX/Hive/merge-refined:/merge-refined
         environment:
           - SOURCE_DIR=/merge
           - TARGET_DIR=/merge-refined
-          - FILENAMES_TO_MOVE=preview16.jpeg
+          - FILENAMES_TO_MOVE=preview16.jpg,preview32.jpg,preview64.jpg,preview128.jpg,preview512.jpg,preview2000.jpg
