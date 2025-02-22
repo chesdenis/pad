@@ -11,3 +11,14 @@ services:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/report:/report
+
+    app_report_storage:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_report_storage
+        command: ["python3", "/apps/app_report_storage.py"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/report:/report
