@@ -20,3 +20,8 @@ Personal advanced directory
 ```json
 {"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*", "args":"parent_folder_path"}
 ```
+
+# message sample to scan and store all meta for all files
+```json
+{"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```

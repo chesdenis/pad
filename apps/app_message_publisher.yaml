@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    rabbitmq:
+        image: rabbitmq:management
+        container_name: rabbitmq
+        ports:
+          - "5672:5672"
+          - "15672:15672"
+    app_message_publisher:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_message_publisher
+        command: ["python3", "/apps/app_message_publisher.py"]
+        volumes:
+          - /Volumes/AnnaX/Hive/json:/json

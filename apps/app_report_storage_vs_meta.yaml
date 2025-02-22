@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+    app_report_storage_vs_meta:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_report_storage_vs_meta
+        command: ["python3", "/apps/app_report_storage_vs_meta.py"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/report:/report

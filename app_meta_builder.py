@@ -30,6 +30,11 @@ def calculate_size(file_path):
 
 rewrite: bool = False
 
+def ensure_attribute_home_folder(relative_path):
+    attribute_home_folder = rp.get_meta_home_folder(relative_path)
+    if not os.path.exists(attribute_home_folder):
+        os.makedirs(attribute_home_folder, exist_ok=True)
+        logging.info(f"Created new attribute folder {attribute_home_folder}")
 
 def require_process(relative_path):
     if rewrite:
@@ -37,10 +42,7 @@ def require_process(relative_path):
 
     attribute_file_path = rp.get_meta_file_name(relative_path, "md5_hash.txt")
     logging.info(f"Verifying attribute existance for {attribute_file_path}")
-    attribute_home_folder = rp.get_meta_home_folder(relative_path)
-    if not os.path.exists(attribute_home_folder):
-        os.makedirs(attribute_home_folder, exist_ok=True)
-        logging.info(f"Created new attribute folder {attribute_home_folder}")
+    ensure_attribute_home_folder(relative_path)
 
     # if file is missing, we must calculate content for it
     if not os.path.exists(attribute_file_path):
@@ -99,6 +101,8 @@ def handle_event_entry(file_path, relative_path, channel, args):
             logging.info(f'File {file_path} with relative path {relative_path} is processed with direct attribute {args}')
             return
     else:
+        logging.info(f'Ensuring home folder for {file_path}')
+        ensure_attribute_home_folder(relative_path)
         logging.info(f'Started to calculate file hash for {file_path} and other attributes')
         md5_hash = calculate_file_hash(file_path)
         parent_folder_name = calculate_parent_folder_name(file_path)
