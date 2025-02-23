@@ -4,6 +4,7 @@ import os.path
 
 import _fs_entry_handler as fshandler
 import _path_resolvers as rp
+import datetime
 
 def calculate_file_hash(file_path):
     hasher = hashlib.md5()
@@ -39,11 +40,8 @@ def ensure_attribute_home_folder(relative_path):
         os.makedirs(attribute_home_folder, exist_ok=True)
         logging.info(f"Created new attribute folder {attribute_home_folder}")
 
-def require_process(relative_path, rewrite):
-    if rewrite:
-        return True
-
-
+    # this is need to filter later attributes which was not updated long time - we can remove them.
+    write_attribute_file(relative_path, 'last-updated.txt', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def write_attribute_file(relative_path, attribute_file_name, attribute_value):
@@ -55,16 +53,24 @@ def write_attribute_file(relative_path, attribute_file_name, attribute_value):
 
 def allow_attr_write(args, attr_name, relative_path, write_all):
     can_write = False
-    if args["meta_name"] == attr_name:
-        if args["rewrite"]:
-            can_write = True
-        elif write_all:
-            can_write = True
-        else:
-            attribute_file_path = rp.get_meta_file_name(relative_path, f"{attr_name}.txt")
-            logging.info(f"Verifying attribute existance for {attribute_file_path}")
-            # if file is missing, we allow write
-            if not os.path.exists(attribute_file_path):
+    rewrite = args.get('rewrite', False)
+
+    attribute_missing = False
+
+    attribute_file_path = rp.get_meta_file_name(relative_path, f"{attr_name}.txt")
+    logging.info(f"Verifying attribute existance for {attribute_file_path}")
+    # if file is missing, we allow write
+    if not os.path.exists(attribute_file_path):
+        attribute_missing = True
+
+    if write_all and attribute_missing:
+        logging.info(f"Writing attribute {attribute_file_path} because write all passed and attribute is missing")
+        can_write = True
+    else:
+        meta_name = args.get('meta_name', '')
+        if meta_name == attr_name:
+            if rewrite or attribute_missing:
+                logging.info(f"Writing specific attribute {attribute_file_path} because of rewrite or attribute is missing")
                 can_write = True
 
     return can_write
@@ -123,7 +129,7 @@ def write_attributes(file_path, relative_path, channel, args, write_all = False)
 
 
 def handle_event_entry(file_path, relative_path, channel, args):
-    if args != '':
+    if args != {}:
         logging.info(f'Applying specific meta extract of {args} for {file_path}')
         write_attributes(file_path, relative_path, channel, args)
     else:

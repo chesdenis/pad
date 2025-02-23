@@ -8,11 +8,13 @@ from _rabbit_client import logger
 def on_message(channel, method_frame, header_frame, body):
     try:
         message = json.loads(body)
+        logger.info(f"Received {message}")
+
         client_id = message['client_id']
         path = message['path']
         type = message['type']
         relative_path = message['relative_path']
-        args = message.get('args', '')
+        args = message.get('args', {})
 
         logger.info(f"Received for {client_id}, for file {path}.")
 

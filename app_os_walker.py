@@ -75,7 +75,7 @@ def process_message(channel, method, properties, body):
     storage_path = message['storage_path']
     recursive = message['recursive']
     file_mask = message['file_mask']
-    args = message.get('args', '')
+    args = message.get('args', {})
 
     exchange = 'os_walk_response'
     routing_key = client_id
