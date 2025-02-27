@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    app_copy_into_merge:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_copy_into_merge
+        command: ["python3", "/apps/app_copy_into_merge.py", "--client_id", "app_copy_into_merge"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/merge:/merge
+    app_copy_into_processing:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_copy_into_processing
+        command: ["python3", "/apps/app_copy_into_processing.py", "--client_id", "app_copy_into_processing"]
+        volumes:
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/storage/_processing:/_processing

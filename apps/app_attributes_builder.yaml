@@ -11,3 +11,14 @@ services:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/merge:/merge
+
+    app_image_hash_builder:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_image_hash_builder
+        command: ["python3", "/apps/app_image_hash_builder.py", "--client_id", "app_image_hash_builder"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/merge:/merge
