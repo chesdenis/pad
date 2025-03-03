@@ -1,5 +1,19 @@
+FROM python:3.9-slim as base
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /deps
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 FROM python:3.9-slim
+
+COPY --from=base /usr/local /usr/local
+
 WORKDIR /
 COPY . /apps
 RUN find /apps -type f -name "*.py" -exec sed -i 's/localhost/host.docker.internal/g' {} +
-RUN pip3 install -r /apps/requirements.txt

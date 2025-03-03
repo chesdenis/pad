@@ -27,7 +27,33 @@ Personal advanced directory
 }
 ```
 
+# message sample to scan and store file hash in meta
+
+```json
+{
+"client_id":"app_meta_builder",
+"storage_path":"/source",
+"recursive":1,
+"file_mask":"*",
+"args":
+    {
+        "meta_name":"md5_hash",
+        "rewrite":true
+    }
+}
+```
+
 # message sample to scan and store all meta for all files
 ```json
 {"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+
+# message sample to rescan and regenerate image averages based on preview
+```json
+{"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+
+# message sample to rescan and regenerate face hashes based on preview
+```json
+{"client_id":"app_face_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*DSC_1456.NEF"}
 ```

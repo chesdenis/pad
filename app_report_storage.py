@@ -16,8 +16,11 @@ def get_total_work_size():
     return total_numbers
 
 def read_first_line(file_path: str):
-    with open(file_path) as f:
-        return f.readline().strip('\n')
+    if os.path.exists(file_path):
+        with open(file_path) as f:
+            return f.readline().strip('\n')
+
+    return ''
 
 def build_report():
     report = []
@@ -45,7 +48,13 @@ def build_report():
                     "extension": read_first_line(os.path.join(meta_folder_path, "extension.txt")),
                     "size": read_first_line(os.path.join(meta_folder_path, "size.txt")),
                     "tags": read_first_line(os.path.join(meta_folder_path, "tags.txt")),
-                    "file_name": read_first_line(os.path.join(meta_folder_path, "file_name.txt"))
+                    "file_name": read_first_line(os.path.join(meta_folder_path, "file_name.txt")),
+                    'preview16_hash' :  read_first_line(os.path.join(meta_folder_path, "preview16_hash.txt")),
+                    'preview32_hash' :  read_first_line(os.path.join(meta_folder_path, "preview32_hash.txt")),
+                    'preview64_hash' :  read_first_line(os.path.join(meta_folder_path, "preview64_hash.txt")),
+                    'preview128_hash' :  read_first_line(os.path.join(meta_folder_path, "preview128_hash.txt")),
+                    'preview512_hash' :  read_first_line(os.path.join(meta_folder_path, "preview512_hash.txt")),
+                    'preview2000_hash' :  read_first_line(os.path.join(meta_folder_path, "preview2000_hash.txt"))
                 })
             except Exception as e:
                 exceptions.append(f'{os.path.join(root, name)}: {e}')
