@@ -12,6 +12,28 @@ services:
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/merge:/merge
 
+    app_meta_builder_2:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_meta_builder_2
+        command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/merge:/merge
+
+    app_meta_builder_3:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_meta_builder_3
+        command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+          - /Volumes/AnnaX/Hive/merge:/merge
+
     app_image_hash_builder:
         build:
           context: ..

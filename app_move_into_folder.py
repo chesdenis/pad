@@ -2,6 +2,7 @@
 import os
 import shutil
 def move_files_with_structure(source_dir, target_dir, files_to_move):
+    print(f'Started moving')
     for root, dirs, files in os.walk(source_dir):
         # Filter the files that need to be moved
         files_to_transfer = [f for f in files if f in files_to_move]
@@ -17,6 +18,8 @@ def move_files_with_structure(source_dir, target_dir, files_to_move):
             target_file_path = os.path.join(target_path, file)
             shutil.move(source_file_path, target_file_path)
             print(f"Moved: {source_file_path} to {target_file_path}")
+
+    print(f'Finished')
 
 if __name__ == '__main__':
     move_files_with_structure(

@@ -43,6 +43,8 @@ def write_face_hash(args, write_all, file_path, relative_path):
             face_vectors_as_json = json.dumps(face_vectors)
             logging.info(f'Serialized face vectors for {relative_path}')
             mb.write_attribute_file(relative_path, "face_vectors.txt", face_vectors_as_json)
+        else:
+            mb.write_attribute_file(relative_path, "face_vectors.txt", "")
 
 def write_attributes(file_path, relative_path, channel, args, write_all = False):
     mb.ensure_attribute_home_folder(relative_path)

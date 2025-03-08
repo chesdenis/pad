@@ -50,10 +50,27 @@ Personal advanced directory
 
 # message sample to rescan and regenerate image averages based on preview
 ```json
-{"client_id":"app_meta_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+{"client_id":"app_image_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
 ```
 
 # message sample to rescan and regenerate face hashes based on preview
 ```json
-{"client_id":"app_face_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*DSC_1456.NEF"}
+{"client_id":"app_face_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+
+
+# message sample to collect report storage
+```json
+{"client_id":"app_report_storage", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+```json
+{"client_id":"app_report_storage_vs_meta", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+```bash
+curl http://localhost:8080/report
+curl http://localhost:8080/clear
+```
+```bash
+curl http://localhost:8081/report
+curl http://localhost:8081/clear
 ```

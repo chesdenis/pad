@@ -1,10 +1,12 @@
 import hashlib
 import logging
 import os.path
+import uuid
 
 import _fs_entry_handler as fshandler
 import _path_resolvers as rp
-import datetime
+
+session_uuid = uuid.uuid4().hex
 
 def calculate_file_hash(file_path):
     hasher = hashlib.md5()
@@ -41,7 +43,7 @@ def ensure_attribute_home_folder(relative_path):
         logging.info(f"Created new attribute folder {attribute_home_folder}")
 
     # this is need to filter later attributes which was not updated long time - we can remove them.
-    write_attribute_file(relative_path, 'last-updated.txt', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    write_attribute_file(relative_path, 'last-updated.txt', session_uuid)
 
 
 def write_attribute_file(relative_path, attribute_file_name, attribute_value):

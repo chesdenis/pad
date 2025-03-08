@@ -4,21 +4,24 @@ services:
     app_report_storage_vs_meta:
         build:
           context: ..
-          dockerfile: app.docker
+          dockerfile: app_report.docker
         container_name: app_report_storage_vs_meta
-        command: ["python3", "/apps/app_report_storage_vs_meta.py"]
+        command: ["python3", "/apps/app_report_storage_vs_meta.py", "--client_id", "app_report_storage_vs_meta"]
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/report:/report
-
+        ports:
+          - "8081:5000"
     app_report_storage:
         build:
           context: ..
-          dockerfile: app.docker
+          dockerfile: app_report.docker
         container_name: app_report_storage
-        command: ["python3", "/apps/app_report_storage.py"]
+        command: ["python3", "/apps/app_report_storage.py", "--client_id", "app_report_storage"]
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/report:/report
+        ports:
+          - "8080:5000"
