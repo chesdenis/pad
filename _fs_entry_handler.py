@@ -33,7 +33,7 @@ def handle_event_entry(file_path, relative_path, channel, args):
     return
 
 
-def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback=None):
+def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback=None, output_exchange='os_walk_response'):
 
     global handle_event_entry
     handle_event_entry = handler_func
@@ -54,5 +54,5 @@ def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback
     rc.listen_topic_exclusive_with_retry(
         on_message,
         client_id,
-        'os_walk_response', prefetch_count=prefetch_count)
+        output_exchange, prefetch_count=prefetch_count)
 

@@ -29,6 +29,7 @@ def add_report_entry(file_path, relative_path, channel, args, write_all = False)
         'relative_folder_path': relative_folder_path,
         'relative_file_path': relative_path,
         'meta_folder': meta_folder_path,
+        'geo_file_exist': os.path.exists(os.path.join(meta_folder_path, 'geo.txt')),
         'extension_file_exist': os.path.exists(os.path.join(meta_folder_path, 'extension.txt')),
         'size_file_exist': os.path.exists(os.path.join(meta_folder_path, 'size.txt')),
         'tags_file_exist': os.path.exists(os.path.join(meta_folder_path, 'tags.txt')),

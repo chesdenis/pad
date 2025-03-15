@@ -19,3 +19,14 @@ services:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/merge:/merge
+    app_os_walker_batch:
+        build:
+          context: ..
+          dockerfile: app.docker
+        container_name: app_os_walker_batch
+        command: [ "python3", "/apps/app_os_walker_batch.py", "--client_id", "app_os_walker_batch" ]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+        environment:
+          - BATCH_SIZE_LIMIT_MB=500

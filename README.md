@@ -58,19 +58,37 @@ Personal advanced directory
 {"client_id":"app_face_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
 ```
 
+# message to publish batched messages
+```json
+{"client_id":"app_os_walker_batch", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```
+
 
 # message sample to collect report storage
-```json
-{"client_id":"app_report_storage", "storage_path":"/source", "recursive":1, "file_mask":"*"}
-```
-```json
-{"client_id":"app_report_storage_vs_meta", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```bash
+curl -X POST -u guest:guest \
+-H "Content-Type: application/json" \
+-d '{
+    "properties": {},
+    "routing_key": "os_walk_request",
+    "payload": "{\"client_id\":\"app_report_storage\", \"storage_path\":\"/source\", \"recursive\":1, \"file_mask\":\"*\"}",
+    "payload_encoding": "string"
+}' \
+http://localhost:15672/api/exchanges/%2F/amq.default/publish
+
+curl -X POST -u guest:guest \
+-H "Content-Type: application/json" \
+-d '{
+    "properties": {},
+    "routing_key": "os_walk_request",
+    "payload": "{\"client_id\":\"app_report_storage_vs_meta\", \"storage_path\":\"/source\", \"recursive\":1, \"file_mask\":\"*\"}",
+    "payload_encoding": "string"
+}' \
+http://localhost:15672/api/exchanges/%2F/amq.default/publish
 ```
 ```bash
 curl http://localhost:8080/report
 curl http://localhost:8080/clear
-```
-```bash
 curl http://localhost:8081/report
 curl http://localhost:8081/clear
 ```

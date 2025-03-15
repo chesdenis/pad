@@ -4,7 +4,7 @@ services:
     app_report_storage_vs_meta:
         build:
           context: ..
-          dockerfile: app_report.docker
+          dockerfile: ../app_web.docker
         container_name: app_report_storage_vs_meta
         command: ["python3", "/apps/app_report_storage_vs_meta.py", "--client_id", "app_report_storage_vs_meta"]
         volumes:
@@ -16,7 +16,7 @@ services:
     app_report_storage:
         build:
           context: ..
-          dockerfile: app_report.docker
+          dockerfile: ../app_web.docker
         container_name: app_report_storage
         command: ["python3", "/apps/app_report_storage.py", "--client_id", "app_report_storage"]
         volumes:

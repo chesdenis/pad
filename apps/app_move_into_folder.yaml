@@ -1,16 +1,30 @@
 version: '3.8'
 
 services:
-    app_move_into_folder:
+    app_move_preview:
         build:
           context: ..
           dockerfile: app.docker
-        container_name: app_move_into_folder
+        container_name: app_move_preview
         command: ["python3", "/apps/app_move_into_folder.py"]
         volumes:
-          - /Volumes/AnnaA/merge-refined:/merge-refined
+          - /Volumes/AnnaA/merge:/merge
           - /Volumes/AnnaX/Hive/meta:/meta
         environment:
-          - SOURCE_DIR=/merge-refined
+          - SOURCE_DIR=/merge
           - TARGET_DIR=/meta
           - FILENAMES_TO_MOVE=preview16.jpg,preview32.jpg,preview64.jpg,preview128.jpg,preview512.jpg,preview2000.jpg
+
+    app_move_geo:
+      build:
+        context: ..
+        dockerfile: app.docker
+      container_name: app_move_geo
+      command: [ "python3", "/apps/app_move_into_folder.py" ]
+      volumes:
+        - /Volumes/AnnaA/Hive/merge:/merge
+        - /Volumes/AnnaX/Hive/meta:/meta
+      environment:
+        - SOURCE_DIR=/merge
+        - TARGET_DIR=/meta
+        - FILENAMES_TO_MOVE=geo.txt

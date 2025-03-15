@@ -10,7 +10,7 @@ services:
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
+          - /Volumes/AnnaA/Hive/merge:/merge
     app_copy_into_processing:
         build:
           context: ..

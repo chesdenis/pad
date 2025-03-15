@@ -5,29 +5,6 @@ services:
         build:
           context: ..
           dockerfile: app.docker
-        container_name: app_meta_builder
-        command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
-        volumes:
-          - /Volumes/AnnaX/Hive/meta:/meta
-          - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
-
-    app_meta_builder_2:
-        build:
-          context: ..
-          dockerfile: app.docker
-        container_name: app_meta_builder_2
-        command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
-        volumes:
-          - /Volumes/AnnaX/Hive/meta:/meta
-          - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
-
-    app_meta_builder_3:
-        build:
-          context: ..
-          dockerfile: app.docker
-        container_name: app_meta_builder_3
         command: ["python3", "/apps/app_meta_builder.py", "--client_id", "app_meta_builder"]
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
@@ -38,52 +15,28 @@ services:
         build:
           context: ..
           dockerfile: app.docker
-        container_name: app_image_hash_builder
         command: ["python3", "/apps/app_image_hash_builder.py", "--client_id", "app_image_hash_builder"]
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/merge:/merge
 
-    app_face_hash_builder_1:
+    app_face_hash_builder:
         build:
           context: ..
           dockerfile: app.docker
-        container_name: app_face_hash_builder_1
         command: ["python3", "/apps/app_face_hash_builder.py", "--client_id", "app_face_hash_builder"]
         volumes:
           - /Volumes/AnnaX/Hive/meta:/meta
           - /Volumes/AnnaX/Hive/storage:/source
           - /Volumes/AnnaX/Hive/merge:/merge
 
-    app_face_hash_builder_2:
-        build:
-          context: ..
-          dockerfile: app.docker
-        container_name: app_face_hash_builder_2
-        command: ["python3", "/apps/app_face_hash_builder.py", "--client_id", "app_face_hash_builder"]
-        volumes:
-          - /Volumes/AnnaX/Hive/meta:/meta
-          - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
-
-    app_face_hash_builder_3:
-        build:
-          context: ..
-          dockerfile: app.docker
-        container_name: app_face_hash_builder_3
-        command: ["python3", "/apps/app_face_hash_builder.py", "--client_id", "app_face_hash_builder"]
-        volumes:
-          - /Volumes/AnnaX/Hive/meta:/meta
-          - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
-    app_face_hash_builder_4:
-        build:
-          context: ..
-          dockerfile: app.docker
-        container_name: app_face_hash_builder_4
-        command: ["python3", "/apps/app_face_hash_builder.py", "--client_id", "app_face_hash_builder"]
-        volumes:
-          - /Volumes/AnnaX/Hive/meta:/meta
-          - /Volumes/AnnaX/Hive/storage:/source
-          - /Volumes/AnnaX/Hive/merge:/merge
+    app_meta_geo_build:
+      build:
+        context: ..
+        dockerfile: app.docker
+      command: [ "python3", "/apps/app_meta_geo_build.py"]
+      volumes:
+        - /Volumes/AnnaA/Hive/merge:/data
+      environment:
+        - TARGET_DIR=/data
