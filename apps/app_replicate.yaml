@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+    app_pad_sender:
+        build:
+          context: ..
+          dockerfile: ../app.docker
+        command: ["python3", "/apps/app_pad_sender.py", "--client_id", "app_pad_sender"]
+        volumes:
+          - /Volumes/AnnaX/Hive/meta:/meta
+          - /Volumes/AnnaX/Hive/storage:/source
+
+    app_pad_receiver:
+        build:
+          context: ..
+          dockerfile: ../app_web.docker
+        command: [ "python3", "/apps/app_pad_receiver.py" ]
+        volumes:
+          - /Volumes/AnnaX/Hive/uploads:/uploads
+          - /Volumes/AnnaX/Hive/tmp:/tmp
+
+    app_pad_combiner:
+        build:
+          context: ..
+          dockerfile: ../app.docker
+        command: ["python3", "/apps/app_pad_combiner.py"]
+        volumes:
+          - /Volumes/AnnaX/Hive/uploads:/uploads
+          - /Volumes/AnnaX/Hive/output:/output
