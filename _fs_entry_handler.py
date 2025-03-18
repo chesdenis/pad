@@ -10,6 +10,10 @@ def on_message(channel, method_frame, header_frame, body):
         message = json.loads(body)
         logger.info(f"Received {message}")
 
+        if isinstance(message, list):
+            logger.info(f"Received list of entries. Delegating processing to client...")
+            handle_event_entry(channel, method_frame, header_frame, body)
+
         client_id = message['client_id']
         path = message['path']
         type = message['type']
@@ -33,7 +37,7 @@ def handle_event_entry(file_path, relative_path, channel, args):
     return
 
 
-def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback=None, output_exchange='os_walk_response'):
+def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback=None, output_exchange='os_walk_response', routing_key=None):
 
     global handle_event_entry
     handle_event_entry = handler_func
@@ -54,5 +58,5 @@ def start(handler_func, prefetch_count=100, parser_modifier= None, args_callback
     rc.listen_topic_exclusive_with_retry(
         on_message,
         client_id,
-        output_exchange, prefetch_count=prefetch_count)
+        output_exchange, routing_key, prefetch_count=prefetch_count)
 

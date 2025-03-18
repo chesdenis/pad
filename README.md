@@ -59,8 +59,16 @@ Personal advanced directory
 ```
 
 # message to publish batched messages
-```json
-{"client_id":"app_os_walker_batch", "storage_path":"/source", "recursive":1, "file_mask":"*"}
+```bash
+curl -X POST -u guest:guest \
+-H "Content-Type: application/json" \
+-d '{
+    "properties": {},
+    "routing_key": "os_walk_request",
+    "payload": "{\"client_id\":\"app_os_walker_batch\", \"storage_path\":\"/source\", \"recursive\":1, \"file_mask\":\"*\"}",
+    "payload_encoding": "string"
+}' \
+http://localhost:15672/api/exchanges/%2F/amq.default/publish
 ```
 
 

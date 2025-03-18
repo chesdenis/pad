@@ -3,8 +3,8 @@ import json
 import requests
 import hashlib
 
-import _cryptography as crypto
-import _compression as comp
+import _crypto_builder as crypto
+import _tar_builder as comp
 
 import os
 

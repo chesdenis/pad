@@ -1,12 +1,19 @@
 import os
 import logging
-import _compression as comp
+import _tar_builder as comp
 import time
+import hashlib
+
+import _crypto_builder as crypto
+
+aes_key_string = os.environ.get("AES_KEY_STRING")
+aes_key = hashlib.sha256(aes_key_string.encode()).digest()[:16]
 
 UPLOAD_FOLDER = "/uploads"
 OUTPUT_FOLDER = "/output"
+DECRYPTED_FOLDER = "/decrypted"
 
-def combine(folder_path, output_folder_path):
+def combine(folder_path, decrypted_folder, output_folder_path):
     try:
         # Dictionary to group parts by filename
         file_groups = {}
@@ -42,10 +49,14 @@ def combine(folder_path, output_folder_path):
                 with open(combined_file_path, 'wb') as combined_file:
                     for part_file, part_number, _ in parts:
                         part_path = os.path.join(folder_path, part_file)
+                        decrypted_part_path = os.path.join(decrypted_folder, part_file)
                         if not os.path.exists(part_path):
                             logging.error(f"Missing file part {part_number}/{total_parts}: {part_path}")
                             return
-                        with open(part_path, 'rb') as part:
+
+                        crypto.decrypt_file(part_path, decrypted_part_path, aes_key=aes_key)
+
+                        with open(decrypted_part_path, 'rb') as part:
                             combined_file.write(part.read())
 
                 logging.info(f"File parts combined successfully into: {combined_file_path}")
@@ -59,5 +70,5 @@ def combine(folder_path, output_folder_path):
 
 if __name__ == "__main__":
     while True:
-        combine(UPLOAD_FOLDER, OUTPUT_FOLDER)
+        combine(UPLOAD_FOLDER, DECRYPTED_FOLDER, OUTPUT_FOLDER)
         time.sleep(60)
