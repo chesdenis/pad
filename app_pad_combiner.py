@@ -3,6 +3,7 @@ import logging
 import _tar_builder as comp
 import time
 import hashlib
+import re
 
 import _crypto_actions as crypto
 
@@ -13,6 +14,9 @@ UPLOAD_FOLDER = "/uploads"
 OUTPUT_FOLDER = "/output"
 DECRYPTED_FOLDER = "/decrypted"
 
+# Define universal regex for matching part information (e.g., part1_of_6)
+PART_REGEX = r"part(?P<part_number>\d+)_of_(?P<total_parts>\d+)"
+
 def combine(folder_path, decrypted_folder, output_folder_path):
     try:
         # Dictionary to group parts by filename
@@ -21,10 +25,11 @@ def combine(folder_path, decrypted_folder, output_folder_path):
         # Iterate over all files in the folder to group by "filename.partX_of_Y" pattern
         for file_name in os.listdir(folder_path):
             if ".part" in file_name and "_of_" in file_name:
-                base_name, part_info = file_name.split(".part", 1)
-                part_number, total_parts = part_info.split("_of_")
-                part_number = int(part_number)
-                total_parts = int(total_parts)
+                match = re.search(PART_REGEX, file_name)
+
+                part_number = int(match.group('part_number'))  # Extract part number
+                total_parts = int(match.group('total_parts'))  # Extract total parts
+                base_name = file_name.split('.part')[0]
 
                 # Group by base name
                 if base_name not in file_groups:
@@ -61,6 +66,17 @@ def combine(folder_path, decrypted_folder, output_folder_path):
 
                 logging.info(f"File parts combined successfully into: {combined_file_path}")
                 comp.extract_tar(combined_file_path, output_folder_path)
+
+                # cleanup
+                os.remove(combined_file_path)
+                logging.info(f"Deleted combined file: {combined_file_path}")
+                os.remove(decrypted_part_path)
+                logging.info(f"Deleted decrypted file: {decrypted_part_path}")
+
+                for part_file, part_number, _ in parts:
+                    part_path = os.path.join(folder_path, part_file)
+                    os.remove(part_path)
+                    logging.info(f"Deleted file part {part_number}/{total_parts}: {part_path}")
 
             except Exception as e:
                 logging.error(f"Error combining file group '{base_name}': {e}")
