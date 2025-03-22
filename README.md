@@ -58,7 +58,7 @@ Personal advanced directory
 {"client_id":"app_face_hash_builder", "storage_path":"/source", "recursive":1, "file_mask":"*"}
 ```
 
-# message to publish batched messages for splitter and next steps
+# message to publish batched messages sender
 ```bash
 curl -X POST -u guest:guest \
 -H "Content-Type: application/json" \

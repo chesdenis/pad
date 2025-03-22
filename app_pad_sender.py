@@ -48,6 +48,12 @@ def on_message(channel, method, properties, body):
         for t in split.walk_on_parts(updated_tar_file_path, chunk_size=SINGLE_TAR_LIMIT_MB):
             logging.info(f"Sending tar part file {t} to app_pad_sender")
             upload_file_to_receiver(t, RECEIVER_URL)
+            logging.info(f"Tar part file {t} sent successfully to app_pad_sender")
+            os.remove(t)
+            logging.info(f"Tar part file {t} removed")
+
+        os.remove(updated_tar_file_path)
+        logging.info(f"Tar file {updated_tar_file_path} removed")
     else:
         logging.info(f"Total size of files is greater than {SINGLE_TAR_LIMIT_MB} MB. Walking and splitting each file.")
         for file_path in file_paths:
@@ -58,6 +64,12 @@ def on_message(channel, method, properties, body):
             for t in split.walk_on_parts(updated_tar_file_path, chunk_size=SINGLE_TAR_LIMIT_MB):
                 logging.info(f"Sending tar part file {t} to app_pad_sender")
                 upload_file_to_receiver(t, RECEIVER_URL)
+                logging.info(f"Tar part file {t} sent successfully to app_pad_sender")
+                os.remove(t)
+                logging.info(f"Tar part file {t} removed")
+
+            os.remove(updated_tar_file_path)
+            logging.info(f"Tar file {updated_tar_file_path} removed")
 
 
 if __name__ == '__main__':
