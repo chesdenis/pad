@@ -29,6 +29,8 @@ def upload_file_to_receiver(file_path, endpoint_url):
         response = requests.post(endpoint_url, files=files)
         response.raise_for_status()  # Raise an error for bad HTTP responses
     logging.info(f"File {encrypted_file_path} uploaded successfully to {endpoint_url}.")
+    os.remove(encrypted_file_path)
+    logging.info(f"Encrypted file {encrypted_file_path} removed.")
     return response
 
 
