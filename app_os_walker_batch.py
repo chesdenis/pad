@@ -71,4 +71,5 @@ def handle_event_entry(file_path, relative_path, channel, args):
 
 if __name__ == '__main__':
     BATCH_SIZE_LIMIT_MB = int(os.getenv('BATCH_SIZE_LIMIT_MB', BATCH_SIZE_LIMIT_MB))
+    TARGET_EXCHANGE = os.getenv('TARGET_EXCHANGE', TARGET_EXCHANGE)
     fshandler.start(handle_event_entry, prefetch_count=100)

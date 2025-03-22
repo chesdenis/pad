@@ -11,6 +11,10 @@ TEMP_FOLDER = "/tmp"
 # Logger setup
 logging.basicConfig(level=logging.INFO)
 
+@app.route('/ping')
+def ping():
+    return "pong"
+
 @app.route('/upload', methods=['POST'])
 def upload_part():
 

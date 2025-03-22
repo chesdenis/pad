@@ -4,7 +4,7 @@ import _tar_builder as comp
 import time
 import hashlib
 
-import _crypto_builder as crypto
+import _crypto_actions as crypto
 
 aes_key_string = os.environ.get("AES_KEY_STRING")
 aes_key = hashlib.sha256(aes_key_string.encode()).digest()[:16]
