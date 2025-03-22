@@ -19,6 +19,7 @@ PART_REGEX = r"part(?P<part_number>\d+)_of_(?P<total_parts>\d+)"
 
 def combine(folder_path, decrypted_folder, output_folder_path):
     try:
+        logging.info(f"Processing folder: {folder_path}")
         # Dictionary to group parts by filename
         file_groups = {}
 
@@ -38,6 +39,7 @@ def combine(folder_path, decrypted_folder, output_folder_path):
 
         # Process each file group
         for base_name, parts in file_groups.items():
+            logging.info(f"Processing file group '{base_name}'")
             # Sort parts by part number
             parts = sorted(parts, key=lambda x: x[1])  # Sort by part_number
 
@@ -50,6 +52,7 @@ def combine(folder_path, decrypted_folder, output_folder_path):
 
             # Combine parts into a single file
             combined_file_path = os.path.join(folder_path, base_name)
+            logging.info(f"Combining file parts into: {combined_file_path}")
             try:
                 with open(combined_file_path, 'wb') as combined_file:
                     for part_file, part_number, _ in parts:
@@ -66,6 +69,7 @@ def combine(folder_path, decrypted_folder, output_folder_path):
 
                 logging.info(f"File parts combined successfully into: {combined_file_path}")
                 comp.extract_tar(combined_file_path, output_folder_path)
+                logging.info(f"Tar file extracted successfully to: {output_folder_path}")
 
                 # cleanup
                 os.remove(combined_file_path)
@@ -85,6 +89,6 @@ def combine(folder_path, decrypted_folder, output_folder_path):
         logging.error(f"Error processing folder '{folder_path}': {e}")
 
 if __name__ == "__main__":
-    while True:
-        combine(UPLOAD_FOLDER, DECRYPTED_FOLDER, OUTPUT_FOLDER)
-        time.sleep(60)
+    # while True:
+    combine(UPLOAD_FOLDER, DECRYPTED_FOLDER, OUTPUT_FOLDER)
+        # time.sleep(60)
