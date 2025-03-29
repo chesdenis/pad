@@ -16,16 +16,20 @@ def build_image_hashes(file_path, relative_path, prefix):
         img = Image.open(file_path)
 
         if not mb.attribute_exist(relative_path, f"{prefix}_colorhash.txt"):
-            mb.write_attribute_file(relative_path, f"{prefix}_colorhash.txt", imagehash.colorhash(img))
+            mb.write_attribute_file(relative_path, f"{prefix}_colorhash.txt", str(imagehash.colorhash(img)))
+            logging.info(f'Computed colorhash for {relative_path}')
 
         if not mb.attribute_exist(relative_path, f"{prefix}_phash.txt"):
-            mb.write_attribute_file(relative_path, f"{prefix}_phash.txt", imagehash.phash(img))
+            mb.write_attribute_file(relative_path, f"{prefix}_phash.txt", str(imagehash.phash(img)))
+            logging.info(f'Computed phash for {relative_path}')
 
         if not mb.attribute_exist(relative_path, f"{prefix}_dhash.txt"):
-            mb.write_attribute_file(relative_path, f"{prefix}_dhash.txt", imagehash.dhash(img))
+            mb.write_attribute_file(relative_path, f"{prefix}_dhash.txt", str(imagehash.dhash(img)))
+            logging.info(f'Computed dhash for {relative_path}')
 
         if not mb.attribute_exist(relative_path, f"{prefix}_average_hash.txt"):
-            mb.write_attribute_file(relative_path, f"{prefix}_average_hash.txt", imagehash.average_hash(img))
+            mb.write_attribute_file(relative_path, f"{prefix}_average_hash.txt", str(imagehash.average_hash(img)))
+            logging.info(f'Computed average_hash for {relative_path}')
 
     except Exception as e:
         logging.error(e)
