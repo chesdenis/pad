@@ -1,16 +1,25 @@
 import pika
 import logging
 import time
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", "localhost")
+RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT", 5672)
+RABBITMQ_USER = os.environ.get("RABBITMQ_USER", "guest")
+RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_PASSWORD", "guest")
 
 def connect_to_rabbitmq():
     while True:
         try:
-            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+            connection = pika.BlockingConnection(pika.ConnectionParameters(
+                RABBITMQ_HOST,
+                RABBITMQ_PORT,
+                '/',
+                pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)))
             return connection
         except pika.exceptions.AMQPConnectionError as e:
             logger.error(f"Connection error: {e}, retrying in 5 seconds...")

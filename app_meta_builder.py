@@ -45,6 +45,9 @@ def ensure_attribute_home_folder(relative_path):
     # this is need to filter later attributes which was not updated long time - we can remove them.
     write_attribute_file(relative_path, 'last-updated.txt', session_uuid)
 
+def attribute_exist(relative_path, attribute_file_name):
+    attr_file_name = rp.get_meta_file_name(relative_path, attribute_file_name)
+    return os.path.exists(attr_file_name)
 
 def write_attribute_file(relative_path, attribute_file_name, attribute_value):
     attr_file_name = rp.get_meta_file_name(relative_path, attribute_file_name)
